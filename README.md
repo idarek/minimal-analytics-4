@@ -32,14 +32,31 @@ const config = {
 ```
 
 ## 📊 What it Tracks
+
+### Events
 | Event | Trigger | Parameters Captured |
 | :--- | :--- | :--- |
-| `page_view` | Initial page load | `dl` (Location), `dt` (Title), `dr` (Referrer) |
-| `scroll` | User reaches 90% depth | `epn.percent_scrolled` |
+| `page_view` | Initial page load | `dl` (URL), `dt` (Title), `dr` (Referrer), `_p` (Page ID) |
+| `session_start` | First hit of a new session | `_ss: 1`, `sid` (Session ID), `sct` (Session Count) |
+| `first_visit` | First time a user is seen | `_fv: 1` |
+| `user_engagement` | Tab closed or hidden (Exit Ping) | `_et` (Engagement time in ms), `seg: 1` |
+| `scroll` | User reaches 90% depth | `epn.percent_scrolled: 90` |
 | `file_download` | Click on configured extensions | `ep.file_name`, `ep.file_extension`, `ep.link_url` |
-| `click` | Click on external domains | `ep.link_url`, `ep.link_text`, `ep.outbound: true` |
-| `user_engagement` | Tab closed or hidden | `_et` (Engagement time in milliseconds) |
+| `click` | Outbound link clicked | `ep.link_url`, `ep.link_text`, `ep.outbound: true` |
 | `view_search_results` | URL contains search queries | `ep.search_term` |
+
+### Global Parameters (Sent with every hit)
+These parameters ensure your data is accurately categorised in GA4 reports.
+
+| Parameter | Name | Description |
+| :--- | :--- | :--- |
+| `cid` | Client ID | Unique ID stored in `localStorage` to identify returning users. |
+| `sid` | Session ID | Identifies the current 30-minute session window. |
+| `sct` | Session Count | Number of sessions the user has started on your site. |
+| `seg` | Session Engaged | Set to `1` if the user stays >10s or performs an interaction. |
+| `sr` | Screen Resolution | The user's screen size in logical pixels. |
+| `ul` | Language | The browser's primary language setting. |
+| `cs`, `cm`, `cn` | UTM Attribution | Source, Medium, and Campaign name (persisted for the whole session). |
 
 ## 🛠️ Developer Notes
 * **Variable Leakage:** The entire script is wrapped in an IIFE to prevent global scope pollution.
