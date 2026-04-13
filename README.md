@@ -68,5 +68,9 @@ To keep your site's performance at its peak, it is recommended to use a minified
 
 I use the [Taco de Wolff Minifier](https://go.tacodewolff.nl/minify) to compress the raw code. This removes comments and whitespace while preserving the logic, ensuring the smallest possible footprint for your production environment.
 
+## Gist Repository
+
+This project was started on Gist before moving to a GitHub repository. Any past versions are available on [Gist](https://gist.github.com/idarek/9ade69ac2a2ef00d98ab950426af5791).
+
 ## ⚖️ License
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
