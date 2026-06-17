@@ -3,7 +3,8 @@
     const config = {
         tid: "G-XXXXXXXXXX", 
         timeout: 1800000,    
-        ext: ["pdf", "xls", "xlsx", "doc", "docx", "txt", "rtf", "csv", "exe", "key", "pps", "ppt", "pptx", "7z", "pkg", "rar", "gz", "zip", "avi", "mov", "mp4", "mpe", "mpeg", "wmv", "mid", "midi", "mp3", "wav", "wma"]
+        ext: ["pdf", "xls", "xlsx", "doc", "docx", "txt", "rtf", "csv", "exe", "key", "pps", "ppt", "pptx", "7z", "pkg", "rar", "gz", "zip", "avi", "mov", "mp4", "mpe", "mpeg", "wmv", "mid", "midi", "mp3", "wav", "wma"],
+        searchKeys: ["q", "s", "search", "query", "keyword"]
     };
     
     const debug = false;
@@ -73,8 +74,11 @@
     const searchString = docLoc.search;
     const searchParams = new URLSearchParams(searchString);
     const getUtm = (key) => searchParams.get("utm_" + key);
-    const sT = ["q", "s", "search", "query", "keyword"];
-    const sR = sT.some(si => searchString.includes("&"+si+"=") || searchString.includes("?"+si+"="));
+    
+    // Robust, case-insensitive search parameter detection
+    const searchKey = [...searchParams.keys()].find(k => config.searchKeys.includes(k.toLowerCase()));
+    const searchTerm = searchKey ? searchParams.get(searchKey) : undefined;
+    const sR = !!searchTerm;
 
     const eventId = () => {
         if (enScroll) return "scroll";
@@ -95,10 +99,9 @@
     };
 
     const searchId = () => {
+        // Guard: Only send the search term on the initial search view, not on subsequent interactions
         if (!sR || enScroll || enFdl || enEngagement || enClick) return undefined;
-        for (let p of searchParams) {
-            if (sT.includes(p[0])) return p[1];
-        }
+        return searchTerm;
     };
 
     /* --- Logic starts after this point --- */
@@ -218,6 +221,7 @@
     }
 
     doc.addEventListener("click", function(e) {
+        if (!(e.target instanceof Element)) return;
         const el = e.target.closest("a");
         
         if (el && el.getAttribute("href")) {
@@ -244,7 +248,7 @@
                 enClick = false;
             }
         }
-    });
+    }, true);
 
     doc.addEventListener("visibilitychange", function() {
         if (doc.visibilityState === "hidden") {

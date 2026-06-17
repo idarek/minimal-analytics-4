@@ -27,11 +27,11 @@ The script is designed to be configured at the very top of the file. You do not 
 const config = {
     tid: "G-XXXXXXXXXX", // Your GA4 Measurement ID
     timeout: 1800000,    // Session timeout (default 30 mins)
-    ext: ["pdf", "zip", "docx", ...] // File extensions to track as downloads
+    ext: ["pdf", "zip", "docx", ...], // File extensions to track as downloads
+    searchKeys: ["q", "s", "search", "query", "keyword"] // URL parameters that identify a site search
 };
 
 const debug = false; // Change to true to see hits in GA4 DebugView
-
 ```
 
 ## 📊 What it Tracks
@@ -78,6 +78,7 @@ By default, privacy extensions may block requests to `google-analytics.com`. If 
 * **Variable Leakage:** The entire script is wrapped in an IIFE to prevent global scope pollution.
 * **Page ID (`_p`):** Unique per page load, ensuring event consistency within a single session.
 * **Screen Resolution:** Reports resolution in logical pixels for accurate cross-device data.
+* **Capture Phase Listening:** The global click listener operates on the capture phase (`true`) rather than the bubble phase. This ensures outbound and download clicks are reliably recorded even if the website uses heavy UI frameworks that aggressively utilise `event.stopPropagation()`.
 
 ## 📦 Production Deployment
 
@@ -91,4 +92,4 @@ This project was started on Gist before moving to a dedicated GitHub repository.
 
 ## ⚖️ License
 
-This project is licensed under the **MIT License** - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
