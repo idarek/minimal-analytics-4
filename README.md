@@ -1,6 +1,6 @@
 # Minimal Analytics 4
 
-A high-performance, privacy-conscious Google Analytics 4 implementation using the Measurement Protocol. Designed for static websites where speed and transparency are paramount.
+A high-performance, reverse-engineered, privacy-conscious Google Analytics 4 implementation using GA4 web transport directly (rather than the Measurement Protocol). Designed for static websites where speed and transparency are paramount.
 
 For a detailed breakdown of the logic behind this script, read the full article:
 👉 **[A very Minimal Google Analytics 4 Snippet](https://dariusz.wieckiewicz.org/en/minimal-google-analytics-4-snippet/)**
