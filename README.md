@@ -14,6 +14,7 @@ For a detailed breakdown of the logic behind this script, read the full article:
 * **Outbound Link Tracking:** Automatically records when users leave your site, including the destination URL and link text.
 * **Event Delegation:** Uses a single high-performance global click listener instead of looping through DOM elements.
 * **Safe Storage:** Built-in `try/catch` safety for `localStorage` to support private/incognito browsing without errors.
+* **Zero-Jank Scroll Tracking:** Uses `requestAnimationFrame` to decouple scroll events from layout queries, completely eliminating "forced reflow" layout thrashing penalties in PageSpeed Insights on mobile devices.
 
 ## 🚀 Installation
 1. Copy the raw code from `minimal-analytics-4.js`.
@@ -79,6 +80,7 @@ By default, privacy extensions may block requests to `google-analytics.com`. If 
 * **Page ID (`_p`):** Unique per page load, ensuring event consistency within a single session.
 * **Screen Resolution:** Reports resolution in logical pixels for accurate cross-device data.
 * **Capture Phase Listening:** The global click listener operates on the capture phase (`true`) rather than the bubble phase. This ensures outbound and download clicks are reliably recorded even if the website uses heavy UI frameworks that aggressively utilise `event.stopPropagation()`.
+* **Scroll Performance:** Scroll calculations are throttled using `requestAnimationFrame`. This prevents synchronous layout recalculations when the mobile address bar resizes the viewport, keeping the script highly performant without altering tracking semantics.
 
 ## 📦 Production Deployment
 

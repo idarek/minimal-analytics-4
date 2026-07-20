@@ -19,6 +19,7 @@
     let enFdl = false;
     let enEngagement = false;
     let enClick = false; 
+    let rafPending = false;
 
     // Safe Storage Check
     const lStor = (function() { 
@@ -209,15 +210,20 @@
     doc.addEventListener("scroll", sEv, { passive: true });
 
     function sEv() {
-        const percentage = sPr();
+        if (rafPending) return;
+        rafPending = true;
         
-        if (percentage < 90) {
-            return;
-        }
-        enScroll = true;
-        a();
-        doc.removeEventListener("scroll", sEv);
-        enScroll = false;
+        requestAnimationFrame(function() {
+            rafPending = false;
+            const percentage = sPr();
+            
+            if (percentage >= 90) {
+                enScroll = true;
+                a();
+                doc.removeEventListener("scroll", sEv);
+                enScroll = false;
+            }
+        });
     }
 
     doc.addEventListener("click", function(e) {
